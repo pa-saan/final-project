@@ -5,7 +5,7 @@ const courses = [
   { id: 1, title: "Cybersecurity Basics", category: "Cybersecurity", progress: 40, thumbnail: "https://source.unsplash.com/200x100/?cybersecurity" },
   { id: 2, title: "Malware Analysis", category: "Malware", progress: 70, thumbnail: "https://source.unsplash.com/200x100/?malware" },
   { id: 3, title: "Phishing Attacks & Prevention", category: "Phishing Attacks & Prevention", progress: 25, thumbnail: "https://source.unsplash.com/200x100/?phishing" },
-  { id: 4, title: "DDos", category: "DDos", progress: 90, thumbnail: "https://source.unsplash.com/200x100/?DDos" },
+  { id: 4, title: "DDos", category: "DDos", progress: 0, thumbnail: "https://source.unsplash.com/200x100/?DDos" },
 ];
 
 const Learning = () => {
