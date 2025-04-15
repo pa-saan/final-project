@@ -8,7 +8,13 @@ import Home from "./pages/Homepage";
 import Training from "./pages/training";
 import Learning from "./pages/learning";
 import Simulation from "./pages/simulation";
-import Dashborde from "./pages/dashboard";
+import Dashboard from "./pages/dashboard";
+import Phishing from "./pages/phishing";
+import Ransomware from "./pages/ransomweare";
+import DDoS from "./pages/ddos";
+import PacketSniffing from "./pages/packet";
+import Malweare from "./pages/malweare";
+
 
 function App() {
   return (
@@ -19,10 +25,15 @@ function App() {
         <Route path="/Services" element={<Services />} />
         <Route path="/About" element={<About />} />
         <Route path="/Help" element={<Help />} />
-        <Route path="/Dashborde" element={<Dashborde/>} />
+        <Route path="/Dashboard" element={<Dashboard/>} />
         <Route path="/Learning" element={<Learning/>} />
         <Route path="/Training" element={<Training/>} />
         <Route path="/Simulation" element={<Simulation/>} />
+        <Route path="/Phishing" element={<Phishing/>} />
+        <Route path="/Ransomware" element={<Ransomware/>} />
+        <Route path="/DDOs" element={<DDoS/>} />
+        <Route path="/PacketSniffing" element={<PacketSniffing/>} />
+        <Route path="/Malweare" element={<Malweare/>} />
       </Routes>
     </Router>
   );

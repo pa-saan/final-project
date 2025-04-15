@@ -1,6 +1,5 @@
 import React from "react";
 import "./HeroSection.css";
-import { FaShieldAlt } from "react-icons/fa"; 
 import { motion } from "framer-motion"; // Import motion for animation
 import Button from "./button";
 
@@ -8,12 +7,7 @@ const HeroSection = () => {
   return (
     <div className="hero-container">
       <div className="hero-box">
-      <motion.div
-          animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.2, 1] }}
-          transition={{ duration: 1, repeat: 0, ease: "easeInOut" }}
-        >
-          <FaShieldAlt className="icon" />
-        </motion.div>
+    
       <div className="hero-text">
       <motion.p
   initial={{ opacity: 0, y: 20 }}
