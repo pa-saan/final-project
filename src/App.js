@@ -14,7 +14,9 @@ import Ransomware from "./pages/ransomweare";
 import DDoS from "./pages/ddos";
 import PacketSniffing from "./pages/packet";
 import Malweare from "./pages/malweare";
-
+import AdminLogin from "./pages/AdminLogin";
+import UserLogin from "./pages/UserLogin";
+import Signup from "./pages/signup";
 
 function App() {
   return (
@@ -34,6 +36,9 @@ function App() {
         <Route path="/DDOs" element={<DDoS/>} />
         <Route path="/PacketSniffing" element={<PacketSniffing/>} />
         <Route path="/Malweare" element={<Malweare/>} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/user-login" element={<UserLogin />} />
+        <Route path="/Signup" element={<Signup />} />
       </Routes>
     </Router>
   );
