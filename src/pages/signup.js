@@ -1,26 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link } from 'react-router-dom';
 
 const App = () => {
-  const [registerData, setRegisterData] = useState({
-    name: "",
-    email: "",
-    password: ""
-  });
-
-  const handleChange = (e) => {
-    setRegisterData({
-      ...registerData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    // For now, we just log the data (you can replace this with API call)
-    console.log("Registering:", registerData);
-    alert("Registered successfully!");
-  };
-
   return (
     <>
       <style>{`
@@ -44,7 +25,7 @@ const App = () => {
           display: flex;
           width: 768px;
           max-width: 100%;
-          min-height: 500px;
+          min-height: 480px;
           overflow: hidden;
           margin: 50px auto;
         }
@@ -63,13 +44,33 @@ const App = () => {
         }
 
         .sign-up {
-          background: linear-gradient(to right, #ff416c, #ff4b2b);
+          background: linear-gradient(to right,rgb(116, 202, 116),#32cd32);
           color: white;
           text-align: center;
         }
 
         h2 {
           margin-bottom: 20px;
+        }
+
+        .social-icons {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 20px;
+        }
+
+        .social-icons a {
+          text-decoration: none;
+          border: 1px solid #ccc;
+          border-radius: 50%;
+          width: 35px;
+          height: 35px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #333;
+          font-weight: bold;
+          font-size: 16px;
         }
 
         input {
@@ -85,7 +86,7 @@ const App = () => {
           border: none;
           border-radius: 20px;
           padding: 10px 30px;
-          background-color: #ff4b2b;
+          background-color: #32cd32;
           color: #fff;
           font-size: 14px;
           cursor: pointer;
@@ -98,59 +99,36 @@ const App = () => {
           color: #fff;
         }
 
-        .form-group {
-          width: 100%;
-          max-width: 300px;
+        .forgot {
+          margin-top: 5px;
+          font-size: 12px;
+          color: #666;
         }
-      `}</style>
+`}</style>
 
       <div className="container">
-        {/* Sign-in section */}
         <div className="sign-in">
-          <h2>Sign in</h2>
+          <h2>Sign Up</h2>
           <div className="social-icons">
             <a href="#">f</a>
             <a href="#">G+</a>
             <a href="#">in</a>
           </div>
-          <span>or use your account</span>
+          <span>or Enter your personal details and start journey with us</span>
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
+          <input type="Role" placeholder="Role" />
+          <input type="Birthday" placeholder="DD MM YYYY" />
           <a className="forgot" href="#">Forgot your password?</a>
-          <button className="btn">SIGN IN</button>
+          <button className="btn">SIGN UP</button>
         </div>
-
-        {/* Register section */}
         <div className="sign-up">
-          <h2>Create Account</h2>
-          <p>Enter your details below to sign up</p>
-          <form className="form-group" onSubmit={handleRegister}>
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={registerData.name}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={registerData.email}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={registerData.password}
-              onChange={handleChange}
-              required
-            />
-            <button type="submit" className="btn btn-outline">REGISTER</button>
-          </form>
+          <h2>Hello</h2>
+          <p>Enter your Your credentials and start journey with us</p>
+          <Link to="/dashboard">
+          <button className="btn btn-outline">SIGN IN</button>
+      </Link>
+         
         </div>
       </div>
     </>

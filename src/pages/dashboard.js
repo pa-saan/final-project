@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaUserShield } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa";
-import { color, motion } from "framer-motion";
+import {  motion } from "framer-motion";
+import SiriLine from "../components/SiriLine";
+import Simulationbutton from "../components/simubuttons"
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,25 +25,7 @@ const Dashboard = () => {
     <div style={styles.wrapper}>
       <div style={styles.animatedBackground}></div>
 
-      {/* Motion Blobs */}
-      <motion.div
-        initial={{ x: -200, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 4, repeat: Infinity, repeatType: "reverse" }}
-        style={{ ...styles.blob, ...styles.blob1 }}
-      />
-      <motion.div
-        initial={{ y: 200, opacity: 0.6 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
-        style={{ ...styles.blob, ...styles.blob2 }}
-      />
-      <motion.div
-        initial={{ x: 100, y: 100, opacity: 0.5 }}
-        animate={{ x: -50, y: -50, opacity: 1 }}
-        transition={{ duration: 8, repeat: Infinity, repeatType: "mirror" }}
-        style={{ ...styles.blob, ...styles.blob3 }}
-      />
+   
 
       <div style={styles.container}>
         <motion.h2
@@ -95,9 +79,21 @@ const Dashboard = () => {
             <h3 style={styles.cardTitle}>Register</h3>
             <p style={styles.cardDesc}>Click here to Register</p>
           </motion.div>
+
+
         </div>
+        <div>
+          <p style={styles.privacyText}>
+  <strong>We Care About Your Privacy</strong><br />
+  Your privacy matters to us. We are committed to protecting your personal information and ensuring your data is handled securely. Any information you provide is used only to enhance your experience and is never shared without your consent.
+</p>
+</div>
+<SiriLine/>
       </div>
+     
     </div>
+    
+  
   );
 };
 
@@ -107,15 +103,10 @@ const styles = {
     minHeight: "100vh",
     overflow: "hidden",
     fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+    backgroundColor: "white", // 👈 Plain background color
   },
-  animatedBackground: {
-    position: "absolute",
-    inset: 0,
-    zIndex: 0,
-    background: "linear-gradient(-45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb)",
-    backgroundSize: "400% 400%",
-    animation: "morphGradient 20s ease infinite",
-  },
+  
+  
   container: {
     position: "relative",
     zIndex: 50,
@@ -125,15 +116,28 @@ const styles = {
   },
   title: {
     fontSize: "30px",
-    color: "rgb(78, 80, 77)",
+    color: "rgb(17, 17, 17)",
     marginBottom: "40px",
+    marginTop: "10px",
   },
   cardContainer: {
     display: "flex",
     justifyContent: "center",
     gap: "40px",
     flexWrap: "wrap",
+    marginTop: "80px",
   },
+  privacyText: {
+    marginTop: "200px",
+    fontSize: "14px",
+    color: "#555",
+    maxWidth: "600px",
+    textAlign: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    lineHeight: "1.6",
+  },
+  
   card: {
     border: "2px solid rgb(255, 255, 255)",
     padding: "30px",

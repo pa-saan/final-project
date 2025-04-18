@@ -108,7 +108,7 @@ const App = () => {
 
       <div className="container">
         <div className="sign-in">
-          <h2>Sign in</h2>
+          <h2>Sign in as Admin</h2>
           <div className="social-icons">
             <a href="#">f</a>
             <a href="#">G+</a>
@@ -118,10 +118,11 @@ const App = () => {
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
           <a className="forgot" href="#">Forgot your password?</a>
-          <button className="btn">SIGN IN</button>
+          <Link to="/AdminDashboard">    <button className="btn">SIGN IN</button></Link>
+      
         </div>
         <div className="sign-up">
-          <h2>Hello, Friend!</h2>
+          <h2>Hello</h2>
           <p>Enter your personal details and start journey with us</p>
           <Link to="/signup">
           <button className="btn btn-outline">SIGN UP</button>
