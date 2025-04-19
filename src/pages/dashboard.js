@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaUserShield } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa";
-import {  motion } from "framer-motion";
+import { motion } from "framer-motion";
 import SiriLine from "../components/SiriLine";
-import Simulationbutton from "../components/simubuttons"
+import Simulationbutton from "../components/simubuttons";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -19,13 +19,41 @@ const Dashboard = () => {
       }
     `;
     document.head.appendChild(styleSheet);
+  
+    const audio = new Audio("/welcome.mp3");
+    audio.volume = 1;
+  
+    let playTimeout;
+    let stopTimeout;
+  
+    // ⏳ Delay before playing
+    playTimeout = setTimeout(() => {
+      audio.play().catch((error) => {
+        console.warn("Autoplay failed:", error.message);
+      });
+  
+      // ⏹️ Stop after 5 seconds
+      stopTimeout = setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0;
+      }, 2300);
+    }, 500);
+  
+    // 🔁 Cleanup
+    return () => {
+      clearTimeout(playTimeout);
+      clearTimeout(stopTimeout);
+      audio.pause();
+      audio.currentTime = 0;
+    };
   }, []);
+  
+  
+  
 
   return (
     <div style={styles.wrapper}>
       <div style={styles.animatedBackground}></div>
-
-   
 
       <div style={styles.container}>
         <motion.h2
@@ -73,27 +101,22 @@ const Dashboard = () => {
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6}}
+            transition={{ delay: 0.6 }}
           >
             <FaUserPlus style={styles.iconStyle} />
             <h3 style={styles.cardTitle}>Register</h3>
             <p style={styles.cardDesc}>Click here to Register</p>
           </motion.div>
-
-
         </div>
+
         <div>
-          <p style={styles.privacyText}>
-  <strong>We Care About Your Privacy</strong><br />
-  Your privacy matters to us. We are committed to protecting your personal information and ensuring your data is handled securely. Any information you provide is used only to enhance your experience and is never shared without your consent.
-</p>
-</div>
-<SiriLine/>
+         
+            
+        </div>
+
+        <SiriLine />
       </div>
-     
     </div>
-    
-  
   );
 };
 
@@ -103,10 +126,8 @@ const styles = {
     minHeight: "100vh",
     overflow: "hidden",
     fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
-    backgroundColor: "white", // 👈 Plain background color
+    backgroundColor: "white",
   },
-  
-  
   container: {
     position: "relative",
     zIndex: 50,
@@ -137,7 +158,6 @@ const styles = {
     marginRight: "auto",
     lineHeight: "1.6",
   },
-  
   card: {
     border: "2px solid rgb(255, 255, 255)",
     padding: "30px",
@@ -160,35 +180,8 @@ const styles = {
   },
   iconStyle: {
     fontSize: "40px",
-    color: "#32cd32", // Soft purple
-  },
-  blob: {
-    position: "absolute",
-    width: "300px",
-    height: "300px",
-    filter: "blur(100px)",
-    borderRadius: "50%",
-    zIndex: "80%",
-  },
-  blob1: {
-    top: "10%",
-    left: "10%",
-    background: "linear-gradient(45deg, #ff9a9e, #fad0c4)", // pink to peach
-    zIndex: "80%",
-  },
-  blob2: {
-    bottom: "15%",
-    right: "20%",
-    background: "linear-gradient(45deg,rgb(211, 172, 42), #c2e9fb)", // sky blue to light teal
- 
-  },
-  blob3: {
-    top: "50%",
-    left: "60%",
-    background: "linear-gradient(45deg, #fbc2eb,rgb(204, 155, 20))", // lavender to soft blue
-  
+    color: "#32cd32",
   },
 };
-
 
 export default Dashboard;

@@ -18,6 +18,8 @@ import UserLogin from "./pages/UserLogin";
 import Signup from "./pages/signup";
 import AdminDashboard from "./pages/AdminDashboard";
 import Phishing from "./pages/PhishingSimulationPage";
+import UserDashboard from "./pages/UserDashboard";
+
 
 function App() {
   return (
@@ -41,6 +43,7 @@ function App() {
         <Route path="/user-login" element={<UserLogin />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/AdminDashboard" element={< AdminDashboard/>} />
+        <Route path="/UserDashboard" element={<UserDashboard/>} />
       </Routes>
     </Router>
   );

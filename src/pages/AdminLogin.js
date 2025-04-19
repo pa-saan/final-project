@@ -123,7 +123,6 @@ const App = () => {
         </div>
         <div className="sign-up">
           <h2>Hello</h2>
-          <p>Enter your personal details and start journey with us</p>
           <Link to="/signup">
           <button className="btn btn-outline">SIGN UP</button>
       </Link>

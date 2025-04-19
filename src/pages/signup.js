@@ -124,7 +124,7 @@ const App = () => {
         </div>
         <div className="sign-up">
           <h2>Hello</h2>
-          <p>Enter your Your credentials and start journey with us</p>
+        
           <Link to="/dashboard">
           <button className="btn btn-outline">SIGN IN</button>
       </Link>

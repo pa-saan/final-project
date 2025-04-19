@@ -13,7 +13,7 @@ const PhishingSimulationPage = () => {
       console.log("Phishing simulation started...");
 
       try {
-        await addDoc(collection(db, "simulation_requests"), {
+        await addDoc(collection(db, "Phishing simulation"), {
           user: "Pasan", // You can make this dynamic
           simulationType: "Phishing",
           status: "pending",
