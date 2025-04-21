@@ -5,6 +5,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { motion } from "framer-motion";
 import SiriLine from "../components/SiriLine";
 import Simulationbutton from "../components/simubuttons";
+import Preloader from "../components/preloader";
 
 const Dashboard = () => {
   const navigate = useNavigate();

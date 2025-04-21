@@ -1,7 +1,37 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
+import SiriLine from "../components/SiriLine";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
-const App = () => {
+const SignUp = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSignUp = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await updateProfile(user, {
+        displayName: name,
+      });
+
+      await setDoc(doc(db, "users", user.uid), {
+        name,
+        email,
+        createdAt: new Date(),
+      });
+
+      navigate("/UserDashboard");
+    } catch (error) {
+      alert("Signup failed: " + error.message);
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -44,7 +74,7 @@ const App = () => {
         }
 
         .sign-up {
-          background: linear-gradient(to right,rgb(116, 202, 116),#32cd32);
+          background: linear-gradient(to right, rgb(116, 202, 116), #32cd32);
           color: white;
           text-align: center;
         }
@@ -104,35 +134,51 @@ const App = () => {
           font-size: 12px;
           color: #666;
         }
-`}</style>
+      `}</style>
 
       <div className="container">
         <div className="sign-in">
-          <h2>Sign Up</h2>
+          <h2>Sign Up as User</h2>
           <div className="social-icons">
-            <a href="#">f</a>
-            <a href="#">G+</a>
-            <a href="#">in</a>
+            <Link to="/facebook">f</Link>
+            <Link to="/facebook">G+</Link>
+            <Link to="/facebook">In</Link>
           </div>
-          <span>or Enter your personal details and start journey with us</span>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <input type="Role" placeholder="Role" />
-          <input type="Birthday" placeholder="DD MM YYYY" />
-          <a className="forgot" href="#">Forgot your password?</a>
-          <button className="btn">SIGN UP</button>
+          <span>or create your account</span>
+
+          <input 
+            type="text" 
+            placeholder="Full Name" 
+            value={name}
+            onChange={(e) => setName(e.target.value)} 
+          />
+
+          <input 
+            type="email" 
+            placeholder="Email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} 
+          />
+          <input 
+            type="password" 
+            placeholder="Password" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} 
+          />
+          <button className="btn" onClick={handleSignUp}>SIGN UP</button>
         </div>
+
         <div className="sign-up">
-          <h2>Hello</h2>
-        
-          <Link to="/dashboard">
-          <button className="btn btn-outline">SIGN IN</button>
-      </Link>
-         
+          <h2>Already have an account?</h2>
+          <Link to="/">
+            <button className="btn btn-outline">SIGN IN</button>
+          </Link>
         </div>
       </div>
+
+      <SiriLine />
     </>
   );
 };
 
-export default App;
+export default SignUp;

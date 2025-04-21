@@ -1,9 +1,23 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import SiriLine from "../components/SiriLine";
-
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase"; // ✅ Make sure this is exported from firebase.js
 
 const App = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/UserDashboard");
+    } catch (error) {
+      alert("Login failed: " + error.message);
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -46,7 +60,7 @@ const App = () => {
         }
 
         .sign-up {
-          background: linear-gradient(to right,rgb(116, 202, 116),#32cd32);
+          background: linear-gradient(to right, rgb(116, 202, 116), #32cd32);
           color: white;
           text-align: center;
         }
@@ -106,30 +120,40 @@ const App = () => {
           font-size: 12px;
           color: #666;
         }
-`}</style>
+      `}</style>
 
       <div className="container">
         <div className="sign-in">
           <h2>Sign in as User</h2>
           <div className="social-icons">
-          <Link to="/facebook">f</Link>
-          <Link to="/facebook">G+</Link>
-          <Link to="/facebook">In</Link>
+            <Link to="/facebook">f</Link>
+            <Link to="/facebook">G+</Link>
+            <Link to="/facebook">In</Link>
           </div>
           <span>or use your account</span>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-         
-     <Link to="/UserDashboard">    <button className="btn">SIGN IN</button></Link>
+          <input 
+            type="email" 
+            placeholder="Email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input 
+            type="password" 
+            placeholder="Password" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button className="btn" onClick={handleLogin}>SIGN IN</button>
         </div>
+
         <div className="sign-up">
           <h2>Hello</h2>
           <Link to="/signup">
-          <button className="btn btn-outline">SIGN UP</button>
-      </Link>
+            <button className="btn btn-outline">SIGN UP</button>
+          </Link>
         </div>
-   
       </div>
+
       <SiriLine />
     </>
   );

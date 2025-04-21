@@ -1,7 +1,35 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../firebase"; // Make sure both auth and db are exported
 
-const App = () => {
+const AdminLogin = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleAdminLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Check if this email has admin access in Firestore
+      const adminRef = doc(db, "admins", user.email);
+      const adminSnap = await getDoc(adminRef);
+
+      if (adminSnap.exists() && adminSnap.data().access === true) {
+        navigate("/AdminDashboard");
+      } else {
+        alert("Access Denied: You are not the admin.");
+        await signOut(auth);
+      }
+
+    } catch (error) {
+      alert("Login failed: " + error.message);
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -44,7 +72,7 @@ const App = () => {
         }
 
         .sign-up {
-          background: linear-gradient(to right,rgb(116, 202, 116),#32cd32);
+          background: linear-gradient(to right, rgb(116, 202, 116), #32cd32);
           color: white;
           text-align: center;
         }
@@ -104,7 +132,7 @@ const App = () => {
           font-size: 12px;
           color: #666;
         }
-`}</style>
+      `}</style>
 
       <div className="container">
         <div className="sign-in">
@@ -115,22 +143,31 @@ const App = () => {
             <a href="#">in</a>
           </div>
           <span>or use your account</span>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <a className="forgot" href="#">Forgot your password?</a>
-          <Link to="/AdminDashboard">    <button className="btn">SIGN IN</button></Link>
-      
+          <button className="btn" onClick={handleAdminLogin}>SIGN IN</button>
         </div>
+
         <div className="sign-up">
           <h2>Hello</h2>
           <Link to="/signup">
-          <button className="btn btn-outline">SIGN UP</button>
-      </Link>
-         
+            <button className="btn btn-outline">SIGN UP</button>
+          </Link>
         </div>
       </div>
     </>
   );
 };
 
-export default App;
+export default AdminLogin;

@@ -19,6 +19,7 @@ import Signup from "./pages/signup";
 import AdminDashboard from "./pages/AdminDashboard";
 import Phishing from "./pages/PhishingSimulationPage";
 import UserDashboard from "./pages/UserDashboard";
+import Preloader from "./components/preloader";
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/Signup" element={<Signup />} />
         <Route path="/AdminDashboard" element={< AdminDashboard/>} />
         <Route path="/UserDashboard" element={<UserDashboard/>} />
+        <Route path="/preloader" element={<Preloader/>} />
       </Routes>
     </Router>
   );
