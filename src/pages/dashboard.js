@@ -150,7 +150,7 @@ const styles = {
     marginTop: "80px",
   },
   privacyText: {
-    marginTop: "200px",
+    marginTop: "100px",
     fontSize: "14px",
     color: "#555",
     maxWidth: "600px",

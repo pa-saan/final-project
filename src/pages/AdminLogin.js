@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../firebase"; // Make sure both auth and db are exported
+import { auth, db } from "../firebase";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(true); // Preloader state
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false),1800); // Show for 2s
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleAdminLogin = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Check if this email has admin access in Firestore
       const adminRef = doc(db, "admins", user.email);
       const adminSnap = await getDoc(adminRef);
 
@@ -43,6 +48,29 @@ const AdminLogin = () => {
           padding: 0;
           height: 100%;
           background: #f6f5f7;
+        }
+
+        .preloader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: #32cd32;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2rem;
+          z-index: 9999;
+          animation: fadeOut 3s ease forwards;
+        }
+
+        @keyframes fadeOut {
+          to {
+            opacity: 0;
+            visibility: hidden;
+          }
         }
 
         .container {
@@ -134,38 +162,42 @@ const AdminLogin = () => {
         }
       `}</style>
 
-      <div className="container">
-        <div className="sign-in">
-          <h2>Sign in as Admin</h2>
-          <div className="social-icons">
-            <a href="#">f</a>
-            <a href="#">G+</a>
-            <a href="#">in</a>
-          </div>
-          <span>or use your account</span>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <a className="forgot" href="#">Forgot your password?</a>
-          <button className="btn" onClick={handleAdminLogin}>SIGN IN</button>
-        </div>
+      {loading && <div className="preloader">CyberEdge Lab</div>}
 
-        <div className="sign-up">
-          <h2>Hello</h2>
-          <Link to="/signup">
-            <button className="btn btn-outline">SIGN UP</button>
-          </Link>
+      {!loading && (
+        <div className="container">
+          <div className="sign-in">
+            <h2>Sign in as Admin</h2>
+            <div className="social-icons">
+              <a href="#">f</a>
+              <a href="#">G+</a>
+              <a href="#">in</a>
+            </div>
+            <span>or use your account</span>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <a className="forgot" href="#">Forgot your password?</a>
+            <button className="btn" onClick={handleAdminLogin}>SIGN IN</button>
+          </div>
+
+          <div className="sign-up">
+            <h2>Hello</h2>
+            <Link to="/signup">
+              <button className="btn btn-outline">SIGN UP</button>
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

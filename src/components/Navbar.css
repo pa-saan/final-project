@@ -18,6 +18,8 @@
   list-style: none;
   display: flex;
   gap: 20px;
+  align-items: center;
+  margin-left: auto; /* Ensures everything aligns to the left */
 }
 
 .nav-links li {
@@ -34,6 +36,15 @@
 
 .nav-links a:hover {
   color: #4d7ef7;
+}
+
+/* User Name Styles */
+.user-name {
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  padding: 10px 15px;
+  margin-left: auto;  /* Pushes the name to the right side */
 }
 
 /* Dropdown Styles */

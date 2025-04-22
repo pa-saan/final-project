@@ -33,20 +33,26 @@ const AdminDashboard = () => {
 
     return (
       <div style={styles.details}>
-        <h2 style={styles.detailsTitle}>{selectedCategory} Requests</h2>
-        {data.length === 0 ? (
-          <p style={styles.noData}>No requests found for {selectedCategory}.</p>
-        ) : (
-          <ul style={styles.list}>
-            {data.map((req) => (
-              <li key={req.id} style={styles.listItem}>
-                <p><strong>Email:</strong> {req.email || "Anonymous"}</p>
-                <p><strong>Time:</strong> {req.timestamp?.seconds ? new Date(req.timestamp.seconds * 1000).toLocaleString() : "N/A"}</p>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <h2 style={styles.detailsTitle}>{selectedCategory} Requests</h2>
+      {data.length === 0 ? (
+        <p style={styles.noData}>No requests found for {selectedCategory}.</p>
+      ) : (
+        <ul style={styles.list}>
+          {data.map((req) => (
+            <li key={req.id} style={styles.listItem}>
+              <p><strong>Email:</strong> {req.email ? req.email : ""}</p>
+              <p><strong>Simulation Type:</strong> {req.simulationType || "N/A"}</p>
+              <p><strong>Status:</strong> {req.status || "N/A"}</p>
+              <p><strong>Time:</strong> 
+                {req.timestamp?.seconds 
+                  ? new Date(req.timestamp.seconds * 1000).toLocaleString() 
+                  : "N/A"}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
     );
   };
 

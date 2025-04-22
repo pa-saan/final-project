@@ -1,20 +1,25 @@
 import React, { useState } from "react";
-import { db } from "../firebase"; // ✅ Firebase config file
-import { collection, addDoc, serverTimestamp } from "firebase/firestore"; // ✅ Firestore methods
+import { db } from "../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getAuth } from "firebase/auth"; // ✅ Firebase Auth for current user
 
 const PhishingSimulationPage = () => {
   const [agreed, setAgreed] = useState(false);
   const [simulationStarted, setSimulationStarted] = useState(false);
-  const [progress, setProgress] = useState(40); // Optional: make dynamic
+  const [progress, setProgress] = useState(40);
 
   const handleStartSimulation = async () => {
     if (agreed) {
       setSimulationStarted(true);
       console.log("Phishing simulation started...");
 
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const userEmail = user?.email || "unknown";
+
       try {
         await addDoc(collection(db, "Phishing simulation"), {
-          user: "Pasan", // You can make this dynamic
+          email: userEmail,
           simulationType: "Phishing",
           status: "pending",
           timestamp: serverTimestamp(),

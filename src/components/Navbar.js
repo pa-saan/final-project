@@ -4,7 +4,7 @@ import { FaTachometerAlt, FaBook, FaChalkboardTeacher, FaLaptopCode } from "reac
 import { IoIosArrowDropdown } from "react-icons/io";
 import "./Navbar.css";
 
-const Navbar = () => {
+const Navbar = ({ userName }) => {  // Add userName as a prop
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
@@ -44,6 +44,8 @@ const Navbar = () => {
         </li>
         <li><Link to="/About">About</Link></li>
         <li><Link to="/Help">Help</Link></li>
+        {/* Display User's Name in the Top Right */}
+        <li className="user-name">{userName}</li>
       </ul>
     </nav>
   );
