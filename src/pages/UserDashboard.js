@@ -37,7 +37,7 @@ function App() {
         body {
           margin: 0;
           font-family: 'Arial', sans-serif;
-          background: linear-gradient(-45deg,rgb(89, 189, 101), #e8f5e9, #f1f8e9,rgb(15, 134, 11));
+          background: linear-gradient(-45deg,rgb(89, 189, 101),rgb(186, 216, 189),rgb(145, 172, 148),rgb(89, 189, 101));
           background-size: 400% 400%;
           animation: gradientBG 8s ease infinite;
           color: #333333;

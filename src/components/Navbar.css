@@ -19,7 +19,7 @@
   display: flex;
   gap: 20px;
   align-items: center;
-  margin-left: auto; /* Ensures everything aligns to the left */
+  margin-left: auto;
 }
 
 .nav-links li {
@@ -36,15 +36,6 @@
 
 .nav-links a:hover {
   color: #4d7ef7;
-}
-
-/* User Name Styles */
-.user-name {
-  font-size: 16px;
-  color: rgb(0, 0, 0);
-  font-weight: bold;
-  padding: 10px 15px;
-  margin-left: auto;  /* Pushes the name to the right side */
 }
 
 /* Dropdown Styles */
@@ -102,4 +93,25 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+/* User Info (Name + Icon) */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+  padding: 10px 15px;
+}
+
+.user-icon {
+  font-size: 22px;
+  color: #4d7ef7;
+}
+
+.user-firstname {
+  font-size: 16px;
+  color: #333;
 }

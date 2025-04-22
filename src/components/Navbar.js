@@ -1,22 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaTachometerAlt, FaBook, FaChalkboardTeacher, FaLaptopCode } from "react-icons/fa";
+import { FaTachometerAlt, FaBook, FaChalkboardTeacher, FaLaptopCode, FaUserCircle } from "react-icons/fa";
 import { IoIosArrowDropdown } from "react-icons/io";
+import { getDoc, doc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 import "./Navbar.css";
+import { onAuthStateChanged } from "firebase/auth";
 
-const Navbar = ({ userName }) => {  // Add userName as a prop
+const Navbar = () => {
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            if (data.name) {
+              setUserName(data.name);
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching user name:", error);
+        }
+      }
+    });
+  
+    return () => unsubscribe(); // cleanup
+  }, []);
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
     <nav className="navbar">
       <Link className="logo" to="/">Cyber Safe</Link>
       <ul className="nav-links">
-        <li 
+        <li
           className="dropdown-wrapper"
           onMouseEnter={() => setDropdownOpen(true)}
           onMouseLeave={() => setDropdownOpen(false)}
         >
-          <button className="dropdown-button"><IoIosArrowDropdown /> Services </button>
+          <button className="dropdown-button">
+            <IoIosArrowDropdown /> Services
+          </button>
           {dropdownOpen && (
             <ul className="dropdown">
               <li>
@@ -44,8 +72,13 @@ const Navbar = ({ userName }) => {  // Add userName as a prop
         </li>
         <li><Link to="/About">About</Link></li>
         <li><Link to="/Help">Help</Link></li>
-        {/* Display User's Name in the Top Right */}
-        <li className="user-name">{userName}</li>
+
+        {userName && (
+          <li className="user-info">
+            <FaUserCircle className="user-icon" />
+            <span className="user-firstname">{userName}</span>
+          </li>
+        )}
       </ul>
     </nav>
   );

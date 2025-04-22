@@ -13,20 +13,24 @@ const SignUp = () => {
 
   const handleSignUp = async () => {
     try {
+      // Create the user with Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
+  
+      // Optional: update the user profile with display name
       await updateProfile(user, {
         displayName: name,
       });
-
+  
+      // Create a new document in the "users" collection with user's UID as the doc ID
       await setDoc(doc(db, "users", user.uid), {
-        name,
-        email,
-        createdAt: new Date(),
+        name: name,
+        email: email
       });
-
+  
+      // Redirect to dashboard
       navigate("/UserDashboard");
+  
     } catch (error) {
       alert("Signup failed: " + error.message);
     }
