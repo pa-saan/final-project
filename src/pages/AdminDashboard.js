@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
+import emailjs from "emailjs-com";
 
 const categories = [
   { name: "Phishing", path: "Phishing simulation" },
@@ -28,31 +29,67 @@ const AdminDashboard = () => {
     return () => unsubscribers.forEach((unsub) => unsub());
   }, []);
 
+  const handleSendSimulation = async (email, simulationType) => {
+    if (!email || !simulationType) {
+      alert("❌ Missing email or simulation type.");
+      return;
+    }
+
+    const templateParams = {
+      to_email: email,
+      from_name: "CyberSim Admin",
+      message: `This is a simulated cyber attack of type: ${simulationType}`,
+      simulation_type: simulationType,
+    };
+
+    console.log("📤 Sending simulation to:", email);
+
+    try {
+      const result = await emailjs.send(
+        "service_qkvl0dj",        // Replace with your EmailJS Service ID
+        "template_4hx5zg5",       // Replace with your EmailJS Template ID
+        templateParams,
+        "7suCieRVZzpqHVBWT"       // Replace with your EmailJS Public Key
+      );
+      console.log("✅ EmailJS response:", result.text);
+      alert(`✅ Simulation email sent to ${email}`);
+    } catch (error) {
+      console.error("❌ EmailJS send failed:", error);
+      alert("❌ Failed to send email. Check the console for more info.");
+    }
+  };
+
   const renderDetails = () => {
     const data = requests[selectedCategory] || [];
 
     return (
       <div style={styles.details}>
-      <h2 style={styles.detailsTitle}>{selectedCategory} Requests</h2>
-      {data.length === 0 ? (
-        <p style={styles.noData}>No requests found for {selectedCategory}.</p>
-      ) : (
-        <ul style={styles.list}>
-          {data.map((req) => (
-            <li key={req.id} style={styles.listItem}>
-              <p><strong>Email:</strong> {req.email ? req.email : ""}</p>
-              <p><strong>Simulation Type:</strong> {req.simulationType || "N/A"}</p>
-              <p><strong>Status:</strong> {req.status || "N/A"}</p>
-              <p><strong>Time:</strong> 
-                {req.timestamp?.seconds 
-                  ? new Date(req.timestamp.seconds * 1000).toLocaleString() 
-                  : "N/A"}
-              </p>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+        <h2 style={styles.detailsTitle}>{selectedCategory} Requests</h2>
+        {data.length === 0 ? (
+          <p style={styles.noData}>No requests found for {selectedCategory}.</p>
+        ) : (
+          <ul style={styles.list}>
+            {data.map((req) => (
+              <li key={req.id} style={styles.listItem}>
+                <p><strong>Email:</strong> {req.email || "N/A"}</p>
+                <p><strong>Simulation Type:</strong> {req.simulationType || "N/A"}</p>
+                <p><strong>Status:</strong> {req.status || "N/A"}</p>
+                <p><strong>Time:</strong> 
+                  {req.timestamp?.seconds
+                    ? new Date(req.timestamp.seconds * 1000).toLocaleString()
+                    : "N/A"}
+                </p>
+                <button
+                  style={styles.button}
+                  onClick={() => handleSendSimulation(req.email, selectedCategory)}
+                >
+                  Send Simulation
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     );
   };
 
@@ -65,7 +102,7 @@ const AdminDashboard = () => {
             key={cat.name}
             style={{
               ...styles.sidebarItem,
-              backgroundColor: selectedCategory === cat.name ? " #32cd32" : "hsl(120, 25.90%, 89.40%)",
+              backgroundColor: selectedCategory === cat.name ? "#32cd32" : "hsl(120, 25.90%, 89.40%)",
               color: selectedCategory === cat.name ? "#fff" : "#000",
             }}
             onClick={() => setSelectedCategory(cat.name)}
@@ -92,7 +129,7 @@ const styles = {
   },
   sidebar: {
     width: "240px",
-    backgroundColor: "rgb(241, 241, 241)", // Deep indigo
+    backgroundColor: "rgb(241, 241, 241)",
     padding: "20px",
     color: "black",
     borderRight: "1px solid #ddd",
@@ -110,11 +147,11 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#ffffff20", // translucent white
+    backgroundColor: "#ffffff20",
     transition: "all 0.3s ease",
   },
   badge: {
-    backgroundColor: "#FF6F00", // orange accent
+    backgroundColor: "#FF6F00",
     borderRadius: "16px",
     padding: "2px 10px",
     fontSize: "12px",
@@ -134,7 +171,7 @@ const styles = {
     fontSize: "26px",
     marginBottom: "25px",
     fontWeight: "600",
-    color: "rgb(54, 54, 54)", // main indigo
+    color: "rgb(54, 54, 54)",
   },
   noData: {
     fontStyle: "italic",
@@ -152,7 +189,18 @@ const styles = {
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
     borderLeft: "4px solid #32cd32",
   },
+  button: {
+    marginTop: "10px",
+    padding: "10px 18px",
+    backgroundColor: "#32cd32",
+    color: "#fff",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    fontSize: "14px",
+    transition: "0.3s ease",
+  },
 };
-
 
 export default AdminDashboard;
