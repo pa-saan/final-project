@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaUsers, FaBook, FaLaptopCode } from "react-icons/fa";
-import { getAuth } from "firebase/auth";
-import { db } from "../firebase"; // ✅ Make sure your firebase config is correct
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { db } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 function App() {
@@ -15,46 +15,48 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   const courseMap = {
-    1: "Cybersecurity Basics",
+    1: "Phishing email",
     2: "Malware Analysis",
-    3: "Phishing Attacks & Prevention",
+    3: "Ransomweare",
     4: "DDos",
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        if (!user) return;
+    const auth = getAuth();
 
-        const q = query(
-          collection(db, "UserProgress"),
-          where("email", "==", user.email)
-        );
-        const snapshot = await getDocs(q);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const q = query(
+            collection(db, "UserProgress"),
+            where("email", "==", user.email)
+          );
+          const snapshot = await getDocs(q);
 
-        const learningData = snapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            title: courseMap[data.courseId] || `Course ${data.courseId}`,
-            progress: data.progress,
-          };
-        });
+          const learningData = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+              title: courseMap[data.courseId] || `Course ${data.courseId}`,
+              progress: data.progress,
+            };
+          });
 
-        setSections({
-          learning: learningData,
-          training: [],
-          simulation: [],
-        });
-      } catch (error) {
-        console.error("❌ Error fetching progress:", error);
-      } finally {
-        setLoading(false);
+          setSections({
+            learning: learningData,
+            training: [],
+            simulation: [],
+          });
+        } catch (error) {
+          console.error("❌ Error fetching progress:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false); // still remove loading if no user
       }
-    };
+    });
 
-    fetchData();
+    return () => unsubscribe();
   }, []);
 
   const goToSection = (section) => {

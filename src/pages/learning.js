@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Learning.css";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 
 const courses = [
   {
     id: 1,
-    title: "Cybersecurity Basics",
-    category: "Cybersecurity",
+    title: "Phishing email",
+    category: "Phishing",
     progress: 0,
     thumbnail: "/video.mp4",
     type: "video",
@@ -22,8 +22,8 @@ const courses = [
   },
   {
     id: 3,
-    title: "Phishing Attacks & Prevention",
-    category: "Phishing Attacks & Prevention",
+    title: "Ransomweare",
+    category: "Ransomweare",
     progress: 25,
     thumbnail: "https://source.unsplash.com/200x100/?phishing",
   },
@@ -39,8 +39,15 @@ const courses = [
 const Learning = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [videoProgress, setVideoProgress] = useState({});
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // 🔁 Wait for Firebase Auth to load the user
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const filteredCourses =
     selectedCategory === "All"
@@ -55,13 +62,13 @@ const Learning = () => {
       [id]: percentage,
     }));
 
-    if (!user) return;
+    if (!currentUser) return;
 
     try {
       await setDoc(
-        doc(db, "UserProgress", `${user.email}_course_${id}`),
+        doc(db, "UserProgress", `${currentUser.email}_course_${id}`),
         {
-          email: user.email,
+          email: currentUser.email,
           courseId: id,
           progress: percentage,
           lastUpdated: new Date(),
@@ -80,10 +87,9 @@ const Learning = () => {
         <ul>
           <li onClick={() => setSelectedCategory("All")}>All Courses</li>
           <li onClick={() => setSelectedCategory("Malware")}>Malware</li>
-          <li onClick={() => setSelectedCategory("Phishing Attacks & Prevention")}>
-            Phishing Attacks
-          </li>
-          <li onClick={() => setSelectedCategory("DDos")}>Networking</li>
+          <li onClick={() => setSelectedCategory("Phishing")}> Phishing emails </li>
+          <li onClick={() => setSelectedCategory("DDos")}>DDoS</li>
+          <li onClick={() => setSelectedCategory("Ransomweare")}>Ransomware</li>
         </ul>
       </aside>
 
