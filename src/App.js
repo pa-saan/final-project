@@ -20,6 +20,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Phishing from "./pages/PhishingSimulationPage";
 import UserDashboard from "./pages/UserDashboard";
 import Preloader from "./components/preloader";
+import PhishingLogsViewer from "./components/PhishingLogsViewer";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path="/AdminDashboard" element={< AdminDashboard/>} />
         <Route path="/UserDashboard" element={<UserDashboard/>} />
         <Route path="/preloader" element={<Preloader/>} />
+        <Route path="/PhishingLogsViewer" element={<PhishingLogsViewer/>} />
       </Routes>
     </Router>
   );
