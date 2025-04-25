@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, addDoc } from "firebase/firestore"; // Add addDoc for saving data
 import emailjs from "emailjs-com";
 import PhishingLogsViewer from "../components/PhishingLogsViewer"; // 👈 Import it
 
@@ -34,15 +34,15 @@ const AdminDashboard = () => {
   }, []);
 
   const handleSendSimulation = async (email, simulationType) => {
-    const trackingLink = `https://yourapp.com/phish-log?email=${encodeURIComponent(email)}&type=${encodeURIComponent(simulationType)}`;
+    const trackingLink = `https://pa-saan.github.io/cyberedge/?email=${encodeURIComponent(email)}&type=${encodeURIComponent(simulationType)}`;
 
     const templateParams = {
       to_email: email,
       from_name: "CyberSim Admin",
       message: `
-        <p>This is a <strong>simulated attack</strong> of type: <strong>${simulationType}</strong>.</p>
-        <p>Please <a href="${trackingLink}" target="_blank">click here to verify your account</a>.</p>
-        <p><em>This is part of a cybersecurity awareness simulation.</em></p>
+        This is a simulated attack of type: ${simulationType}
+        Please <a href="${trackingLink}" target="_blank">click here to verify your account</a>.
+        This is part of a cybersecurity awareness simulation.
       `,
       simulation_type: simulationType,
     };
@@ -56,6 +56,13 @@ const AdminDashboard = () => {
       );
       console.log("✅ Email sent:", result.text);
       alert(`✅ Simulation email sent to ${email}`);
+
+      // Save the email to Firebase after sending it
+      await addDoc(collection(db, "sent_simulations"), {
+        email: email,
+        simulationType: simulationType,
+        timestamp: new Date(),
+      });
     } catch (error) {
       console.error("❌ Email failed:", error);
       alert("❌ Email sending failed. Check console.");
