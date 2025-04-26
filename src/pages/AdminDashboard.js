@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, onSnapshot, addDoc } from "firebase/firestore"; // Add addDoc for saving data
+import { collection, onSnapshot, addDoc } from "firebase/firestore";
 import emailjs from "emailjs-com";
-import PhishingLogsViewer from "../components/PhishingLogsViewer"; // 👈 Import it
+import PhishingLogsViewer from "../components/PhishingLogsViewer";
 
 const categories = [
   { name: "Phishing", path: "Phishing simulation" },
@@ -10,7 +10,7 @@ const categories = [
   { name: "Ransomware", path: "Ransomware simulation" },
   { name: "DDoS", path: "ddoS simulation" },
   { name: "Packet Sniffing", path: "Packet sniffing simulation" },
-  { name: "Phishing Logs", path: null }, // 👈 Sidebar tab for user activity logs
+  { name: "Phishing Logs", path: null },
 ];
 
 const AdminDashboard = () => {
@@ -34,38 +34,144 @@ const AdminDashboard = () => {
   }, []);
 
   const handleSendSimulation = async (email, simulationType) => {
+    if (!email) {
+      console.error("❌ Email is missing. Aborting send.");
+      alert("❌ Cannot send simulation. Email address is missing!");
+      return;
+    }
+
     const trackingLink = `https://pa-saan.github.io/cyberedge/?email=${encodeURIComponent(email)}&type=${encodeURIComponent(simulationType)}`;
 
-    const templateParams = {
-      to_email: email,
-      from_name: "CyberSim Admin",
-      message: `
-        This is a simulated attack of type: ${simulationType}
-        Please <a href="${trackingLink}" target="_blank">click here to verify your account</a>.
-        This is part of a cybersecurity awareness simulation.
-      `,
-      simulation_type: simulationType,
-    };
+    if (simulationType === "Phishing") {
+      const templateParams = {
+        to_email: email,
+        from_name: "CyberSim Admin",
+        message: `
+          This is a simulated phishing attack.<br>
+          Please <a href="${trackingLink}" target="_blank">click here to verify your account</a>.<br><br>
+          This is part of a cybersecurity awareness simulation.
+        `,
+        simulation_type: simulationType,
+      };
 
-    try {
-      const result = await emailjs.send(
-        "service_qkvl0dj",
-        "template_4hx5zg5",
-        templateParams,
-        "7suCieRVZzpqHVBWT"
-      );
-      console.log("✅ Email sent:", result.text);
-      alert(`✅ Simulation email sent to ${email}`);
+      try {
+        const result = await emailjs.send(
+          "service_qkvl0dj",
+          "template_4hx5zg5",
+          templateParams,
+          "7suCieRVZzpqHVBWT"
+        );
+        console.log("✅ Phishing email sent:", result.text);
+        alert(`✅ Phishing simulation email sent to ${email}`);
 
-      // Save the email to Firebase after sending it
-      await addDoc(collection(db, "sent_simulations"), {
-        email: email,
-        simulationType: simulationType,
-        timestamp: new Date(),
-      });
-    } catch (error) {
-      console.error("❌ Email failed:", error);
-      alert("❌ Email sending failed. Check console.");
+        await addDoc(collection(db, "sent_simulations"), {
+          email: email,
+          simulationType: simulationType,
+          timestamp: new Date(),
+        });
+      } catch (error) {
+        console.error("❌ Phishing email failed:", error);
+        alert("❌ Phishing email sending failed. Check console.");
+      }
+    }
+
+    if (simulationType === "Malware") {
+      const templateParams = {
+        to_email: email,
+        from_name: "CyberSim Admin",
+        message: `
+          This is a simulated malware attack.<br>
+          Please <a href="${trackingLink}" target="_blank">click here to scan your system</a>.<br><br>
+          This is part of a cybersecurity awareness simulation.
+        `,
+        simulation_type: simulationType,
+      };
+
+      try {
+        const result = await emailjs.send(
+          "service_qkvl0dj",
+          "template_malware",
+          templateParams,
+          "7suCieRVZzpqHVBWT"
+        );
+        console.log("✅ Malware email sent:", result.text);
+        alert(`✅ Malware simulation email sent to ${email}`);
+
+        await addDoc(collection(db, "sent_simulations"), {
+          email: email,
+          simulationType: simulationType,
+          timestamp: new Date(),
+        });
+      } catch (error) {
+        console.error("❌ Malware email failed:", error);
+        alert("❌ Malware email sending failed. Check console.");
+      }
+    }
+
+    if (simulationType === "Ransomware") {
+      const ransomwareTemplateParams = {
+        to_email: email,
+        from_name: "CyberSim Admin",
+        message: `
+          ⚠️ Your system has been encrypted with ransomware!<br><br>
+          Please <a href="${trackingLink}" target="_blank">click here to attempt recovery</a>.<br><br>
+          This is a simulation for cybersecurity awareness.
+        `,
+        simulation_type: simulationType,
+      };
+
+      try {
+        const result = await emailjs.send(
+          "service_qkvl0dj",
+          "template_ul5inq1",
+          ransomwareTemplateParams,
+          "7suCieRVZzpqHVBWT"
+        );
+        console.log("✅ Ransomware email sent:", result.text);
+        alert(`✅ Ransomware simulation email sent to ${email}`);
+
+        await addDoc(collection(db, "sent_ransomware_simulations"), {
+          email: email,
+          simulationType: simulationType,
+          timestamp: new Date(),
+        });
+      } catch (error) {
+        console.error("❌ Ransomware email failed:", error);
+        alert("❌ Ransomware email sending failed. Check console.");
+      }
+    }
+
+    if (simulationType === "DDoS") {
+      const ddosTemplateParams = {
+        to_email: email,
+        from_name: "CyberSim Admin",
+        message: `
+          This is a simulated DDoS attack notification.<br>
+          Please stay alert!<br><br>
+          This is part of a cybersecurity awareness simulation.
+        `,
+        simulation_type: simulationType,
+      };
+
+      try {
+        const result = await emailjs.send(
+          "service_qkvl0dj",
+          "template_ddos",
+          ddosTemplateParams,
+          "7suCieRVZzpqHVBWT"
+        );
+        console.log("✅ DDoS email sent:", result.text);
+        alert(`✅ DDoS simulation email sent to ${email}`);
+
+        await addDoc(collection(db, "sent_simulations"), {
+          email: email,
+          simulationType: simulationType,
+          timestamp: new Date(),
+        });
+      } catch (error) {
+        console.error("❌ DDoS email failed:", error);
+        alert("❌ DDoS email sending failed. Check console.");
+      }
     }
   };
 
@@ -85,7 +191,9 @@ const AdminDashboard = () => {
           <ul style={styles.list}>
             {data.map((req) => (
               <li key={req.id} style={styles.listItem}>
-                <p><strong>Email:</strong> {req.email}</p>
+                <p>
+                  <strong>Email:</strong> {req.email || <span style={{ color: "red" }}>Missing Email</span>}
+                </p>
                 <p><strong>Simulation Type:</strong> {req.simulationType}</p>
                 <p><strong>Status:</strong> {req.status}</p>
                 <p><strong>Time:</strong> 
@@ -94,10 +202,15 @@ const AdminDashboard = () => {
                     : "N/A"}
                 </p>
                 <button
-                  style={styles.button}
+                  style={{
+                    ...styles.button,
+                    backgroundColor: req.email ? "#32cd32" : "#ccc",
+                    cursor: req.email ? "pointer" : "not-allowed",
+                  }}
+                  disabled={!req.email}
                   onClick={() => handleSendSimulation(req.email, selectedCategory)}
                 >
-                  Send Simulation
+                  {req.email ? "Send Simulation" : "Invalid Email"}
                 </button>
               </li>
             ))}
@@ -146,7 +259,7 @@ const styles = {
   noData: { fontStyle: "italic", color: "#999" },
   list: { listStyle: "none", padding: 0 },
   listItem: { backgroundColor: "#fff", padding: "20px", marginBottom: "15px", borderRadius: "10px", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)", borderLeft: "4px solid #32cd32" },
-  button: { marginTop: "10px", padding: "10px 18px", backgroundColor: "#32cd32", color: "#fff", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "bold", fontSize: "14px" },
+  button: { marginTop: "10px", padding: "10px 18px", border: "none", borderRadius: "8px", fontWeight: "bold", fontSize: "14px" },
 };
 
 export default AdminDashboard;

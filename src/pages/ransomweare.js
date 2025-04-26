@@ -1,21 +1,27 @@
+// ✅ RansomwareSimulationPage.js (fixed)
 import React, { useState } from "react";
-import { db } from "../firebase"; // ✅ Firebase config file
-import { collection, addDoc, serverTimestamp } from "firebase/firestore"; // ✅ Firestore methods
+import { db } from "../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const RansomwareSimulationPage = () => {
   const [agreed, setAgreed] = useState(false);
   const [simulationStarted, setSimulationStarted] = useState(false);
-  const [progress, setProgress] = useState(40); // Optional: make dynamic
+  const [progress, setProgress] = useState(40);
 
   const handleStartSimulation = async () => {
     if (agreed) {
       setSimulationStarted(true);
-      console.log("Ddos simulation started...");
+      console.log("Ransomware simulation started...");
+
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const userEmail = user?.email || "unknown";
 
       try {
         await addDoc(collection(db, "Ransomware simulation"), {
-          user: "Pasan", // You can make this dynamic
-          simulationType: "Ddos",
+          email: userEmail, // ✅ Save email correctly
+          simulationType: "Ransomware",
           status: "pending",
           timestamp: serverTimestamp(),
         });
@@ -33,10 +39,9 @@ const RansomwareSimulationPage = () => {
       {!simulationStarted ? (
         <div style={styles.card}>
           <p style={styles.description}>
-            Before starting the phishing simulation, please review and agree to
+            Before starting the ransomware simulation, please review and agree to
             our terms and conditions. This simulation is designed for
-            educational purposes only and helps users recognize and avoid
-            phishing attacks in a safe environment.
+            educational purposes only.
           </p>
 
           <label style={styles.checkboxContainer}>
@@ -81,73 +86,17 @@ const RansomwareSimulationPage = () => {
 };
 
 const styles = {
-  wrapper: {
-    minHeight: "100vh",
-    padding: "40px 20px",
-    fontFamily: "Segoe UI, sans-serif",
-    backgroundColor: "#f9f9f9",
-    color: "#333",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: "28px",
-    marginBottom: "20px",
-  },
-  card: {
-    backgroundColor: "#fff",
-    padding: "30px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-    maxWidth: "600px",
-    textAlign: "center",
-  },
-  description: {
-    fontSize: "16px",
-    marginBottom: "20px",
-    lineHeight: "1.6",
-  },
-  checkboxContainer: {
-    marginBottom: "20px",
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    fontSize: "14px",
-  },
-  checkboxLabel: {
-    cursor: "pointer",
-  },
-  button: {
-    padding: "12px 24px",
-    border: "none",
-    borderRadius: "8px",
-    color: "#fff",
-    fontSize: "16px",
-    transition: "0.3s",
-  },
-  simulation: {
-    textAlign: "center",
-    marginTop: "40px",
-  },
-  progressContainer: {
-    marginTop: "60px",
-    width: "100%",
-    maxWidth: "600px",
-    textAlign: "center",
-  },
-  progressBarWrapper: {
-    height: "16px",
-    backgroundColor: "#ddd",
-    borderRadius: "8px",
-    overflow: "hidden",
-    margin: "10px 0",
-  },
-  progressBar: {
-    height: "100%",
-    backgroundColor: "#4caf50",
-    transition: "width 0.4s ease",
-  },
+  wrapper: { minHeight: "100vh", padding: "40px 20px", fontFamily: "Segoe UI, sans-serif", backgroundColor: "#f9f9f9", color: "#333", display: "flex", flexDirection: "column", alignItems: "center" },
+  title: { fontSize: "28px", marginBottom: "20px" },
+  card: { backgroundColor: "#fff", padding: "30px", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", maxWidth: "600px", textAlign: "center" },
+  description: { fontSize: "16px", marginBottom: "20px", lineHeight: "1.6" },
+  checkboxContainer: { marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px", fontSize: "14px" },
+  checkboxLabel: { cursor: "pointer" },
+  button: { padding: "12px 24px", border: "none", borderRadius: "8px", color: "#fff", fontSize: "16px", transition: "0.3s" },
+  simulation: { textAlign: "center", marginTop: "40px" },
+  progressContainer: { marginTop: "60px", width: "100%", maxWidth: "600px", textAlign: "center" },
+  progressBarWrapper: { height: "16px", backgroundColor: "#ddd", borderRadius: "8px", overflow: "hidden", margin: "10px 0" },
+  progressBar: { height: "100%", backgroundColor: "#4caf50", transition: "width 0.4s ease" },
 };
 
 export default RansomwareSimulationPage;
