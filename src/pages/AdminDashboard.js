@@ -47,9 +47,18 @@ const AdminDashboard = () => {
         to_email: email,
         from_name: "CyberSim Admin",
         message: `
-          This is a simulated phishing attack.<br>
-          Please <a href="${trackingLink}" target="_blank">click here to verify your account</a>.<br><br>
-          This is part of a cybersecurity awareness simulation.
+         Dear Customer,
+
+          Congratulations!
+          
+          You have been selected to receive a $100 Amazon Gift Voucher as part of our Customer Loyalty Program.
+
+          To claim your voucher, <a href="${trackingLink}" target="_blank">please click here and fill out the form</a>
+
+          This offer is available for a limited time. Redeem your reward today and enjoy shopping with Amazon!
+
+          Thank you for being a valued customer,
+          Amazon Rewards Team
         `,
         simulation_type: simulationType,
       };
@@ -80,9 +89,10 @@ const AdminDashboard = () => {
         to_email: email,
         from_name: "CyberSim Admin",
         message: `
-          This is a simulated malware attack.<br>
-          Please <a href="${trackingLink}" target="_blank">click here to scan your system</a>.<br><br>
-          This is part of a cybersecurity awareness simulation.
+          Dear Customer,
+
+          Congratulations!
+          
         `,
         simulation_type: simulationType,
       };
@@ -113,9 +123,32 @@ const AdminDashboard = () => {
         to_email: email,
         from_name: "CyberSim Admin",
         message: `
-          ⚠️ Your system has been encrypted with ransomware!<br><br>
-          Please <a href="${trackingLink}" target="_blank">click here to attempt recovery</a>.<br><br>
-          This is a simulation for cybersecurity awareness.
+        As part of our cybersecurity awareness initiative, you have been invited to participate in a controlled ransomware simulation experience.
+
+This simulation will demonstrate how ransomware attacks typically infiltrate systems and encrypt data. Your participation will help you better understand real-world cybersecurity threats and enhance your defensive skills.
+
+Instructions:
+
+Download the simulation application from the following link:
+https://github.com/pa-saan/RansomwareSimulationApp
+
+Follow the setup guide provided in the GitHub repository.
+
+Run the application in a safe environment (for example, a virtual machine or an isolated test system) to experience the simulation.
+
+⚠️ Important:
+
+This is a safe educational simulation.
+
+No real harm will occur to your data.
+
+DO NOT run this application on critical or personal systems.
+
+For any questions or support, feel free to contact us.
+
+Stay safe,
+CyberEdge Labs
+Pioneering Cybersecurity Education
         `,
         simulation_type: simulationType,
       };
