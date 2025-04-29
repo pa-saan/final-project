@@ -1,39 +1,40 @@
 import React from "react";
 import "./Testimonials.css"; // Import external CSS
+import { FaQuoteLeft } from "react-icons/fa"; // Using a real quote icon
 
 const testimonials = [
   {
     quote:
-      "This platform has completely transformed how we approach our digital strategy. The results have been incredible.",
-    name: "Alex Johnson",
-    role: "Marketing Director",
+      "CyberEdge Labs gave our team hands-on experience against real-world cyber threats. Our incident response skills have improved dramatically.",
+    name: "Emily Carter",
+    role: "Chief Information Security Officer (CISO)",
   },
   {
     quote:
-      "The ease of use combined with powerful features makes this the perfect solution for our growing business.",
-    name: "Sarah Chen",
-    role: "CEO, TechStart",
+      "Thanks to CyberEdge Labs' training simulations, our employees are now far better prepared to recognize and respond to phishing attacks.",
+    name: "Daniel Kim",
+    role: "Cybersecurity Awareness Lead",
   },
   {
     quote:
-      "We've seen a 200% increase in engagement since implementing this platform. Highly recommended!",
-    name: "Michael Rodriguez",
-    role: "Product Manager",
+      "The realistic DDoS and ransomware exercises provided by CyberEdge Labs helped our IT department strengthen our defensive strategies.",
+    name: "Priya Singh",
+    role: "Network Security Engineer",
   },
 ];
 
 const Testimonials = () => {
   return (
     <div className="testimonials-container">
-      <h2 className="testimonials-title">What Our Clients Say</h2>
+      <h2 className="testimonials-title">Trusted by Cybersecurity Professionals</h2>
       <p className="testimonials-subtitle">
-        Don't just take our word for it
+        Real results from real training experiences
       </p>
 
       <div className="testimonials-grid">
         {testimonials.map((testimonial, index) => (
           <div className="testimonial-card" key={index}>
-            <span className="quote-icon">"</span>
+            <FaQuoteLeft className="quote-icon" />
             <p className="testimonial-text">
               <em>{testimonial.quote}</em>
             </p>

@@ -4,12 +4,12 @@ const Button = () => {
   return (
     <button
       style={{
-        backgroundColor:"#4974df" ,
+        backgroundColor:"#32cd32" ,
         color: "black",
         padding: "12px 24px",
         fontSize: "16px",
         fontWeight: "bold",
-        border: "2px solid #4974df",
+        border: "2px solid #32cd32",
         borderRadius: "30px",
         cursor: "pointer",
         alignItems: "center",
